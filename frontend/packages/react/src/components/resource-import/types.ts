@@ -157,6 +157,25 @@ export interface ResourceImportField {
   onPick?: () => void;
 }
 
+/**
+ * 用户选中的一个文件，带它在所选目录内的相对路径。
+ *
+ * A file the user picked, with its path relative to the directory they chose.
+ */
+export interface ResourceImportPickedFile {
+  /**
+   * 文件本体。
+   * The file itself.
+   */
+  file: File;
+  /**
+   * 相对于所选根目录的路径，例如 `docs/guide.md`；选择单个文件时为文件名。
+   * Path relative to the chosen root, for example `docs/guide.md`; just the file
+   * name when a single file was picked.
+   */
+  relativePath: string;
+}
+
 /** 宿主已加入导入队列的文件。A file the host has accepted into the import queue. */
 export interface ResourceImportFile {
   /**
@@ -492,10 +511,23 @@ export interface ResourceImportFilePickerProps {
    */
   labels?: ResourceImportLabels;
   /**
-   * 上报用户选择或拖入的文件。
-   * Reports files the user picked or dropped.
+   * 上报用户选择或拖入的文件。拖入目录时同样按文件逐个上报。
+   * Reports files the user picked or dropped. A dropped directory is reported
+   * as its files.
    */
   onFilesAdded: (files: readonly File[]) => void;
+  /**
+   * 是否提供「选择文件夹」入口。开启后 `onDirectoryAdded` 必传。
+   * Whether a pick-a-folder entry is offered. `onDirectoryAdded` is then
+   * required.
+   */
+  directoryPicker?: boolean;
+  /**
+   * 上报用户选中的目录内容。每个条目带相对路径，组件按它还原目录结构。
+   * Reports the contents of a picked directory. Each entry carries its relative
+   * path, from which the component rebuilds the directory structure.
+   */
+  onDirectoryAdded?: (files: readonly ResourceImportPickedFile[]) => void;
   /**
    * 移除一个已选文件。
    * Removes a selected file.
@@ -535,16 +567,6 @@ export interface ResourceImportTaskListProps {
    * Retries a failed task.
    */
   onRetry?: (task: ResourceImportTask) => void;
-  /**
-   * 取消一个进行中的任务。
-   * Cancels a running task.
-   */
-  onCancel?: (task: ResourceImportTask) => void;
-  /**
-   * 清除已完成的任务。
-   * Clears finished tasks.
-   */
-  onClearFinished?: () => void;
 }
 
 /**

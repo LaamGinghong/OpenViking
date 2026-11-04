@@ -23,18 +23,14 @@ export interface AgentConnectSnippet {
    */
   copyText?: string;
   /**
-   * 是否初始脱敏展示，例如片段中含有密钥时。
-   * Whether the snippet starts masked, for example when it holds a secret.
+   * 脱敏时点击揭示后展示的完整文本。省略时不显示揭示入口。
+   * The full text shown after the user reveals a concealed snippet. No reveal
+   * control is rendered when omitted.
    */
-  concealed?: boolean;
+  revealText?: string;
   /**
-   * 脱敏状态下揭示按钮的文案。
-   * Label of the reveal toggle while concealed.
-   */
-  revealLabel?: string;
-  /**
-   * 片段对应的文件名。
-   * File name the snippet belongs to.
+   * 片段对应的文件名，作为代码块上方的说明。
+   * File name the snippet belongs to, shown as the caption above the code.
    */
   filename?: string;
 }
@@ -66,11 +62,6 @@ export interface AgentConnectStep {
    * Additional notes rendered after the snippets.
    */
   notes?: readonly ReactNode[];
-  /**
-   * 宿主是否认为该步骤已完成。
-   * Whether the host considers this step complete.
-   */
-  done?: boolean;
 }
 
 /** 详情视图中的附加页签，例如按协议区分。An extra tab inside the detail view, for example per protocol. */
@@ -115,6 +106,12 @@ export interface AgentConnectItem {
    */
   description?: string;
   /**
+   * 详情页的说明。列表卡片用 `description`，详情头部用这个，两者内容通常不同。
+   * Description on the detail page. The catalog card uses `description`, the
+   * detail header uses this one; they usually say different things.
+   */
+  detailDescription?: string;
+  /**
    * 宿主提供的图标；缺省时回退到首字母。
    * Logo supplied by the host; falls back to an initial.
    */
@@ -134,6 +131,11 @@ export interface AgentConnectItem {
    * Rendered on the card, for example a "new" or "updated" marker.
    */
   badge?: ReactNode;
+  /**
+   * 卡片上的查看次数，宿主统计；不传则不显示。
+   * View count shown on the card, counted by the host; hidden when omitted.
+   */
+  viewCount?: number;
   /**
    * 是否禁用该条目。
    * Whether the item is disabled.
@@ -174,29 +176,6 @@ export interface AgentConnectDetail {
    */
   errorMessage?: string;
 }
-
-/** 接入或连接状态。Status of the connection. */
-export type AgentConnectStatus =
-  /**
-   * 尚未接入。
-   * Not connected yet.
-   */
-  | 'idle'
-  /**
-   * 接入进行中。
-   * A connection attempt is in progress.
-   */
-  | 'connecting'
-  /**
-   * 已接入。
-   * Connected.
-   */
-  | 'connected'
-  /**
-   * 接入失败。
-   * The connection failed.
-   */
-  | 'error';
 
 /**
  * 可替换文案，组件内置英文默认值。
@@ -253,36 +232,6 @@ export interface AgentConnectLabels {
    * Loading message.
    */
   loading?: string;
-  /**
-   * 连接按钮文案。
-   * Connect button label.
-   */
-  connect?: string;
-  /**
-   * 断开连接按钮文案。
-   * Disconnect button label.
-   */
-  disconnect?: string;
-  /**
-   * 未连接状态文本。
-   * Text for the idle status.
-   */
-  statusIdle?: string;
-  /**
-   * 连接中状态文本。
-   * Text for the connecting status.
-   */
-  statusConnecting?: string;
-  /**
-   * 已连接状态文本。
-   * Text for the connected status.
-   */
-  statusConnected?: string;
-  /**
-   * 连接失败状态文本。
-   * Text for the error status.
-   */
-  statusError?: string;
   /**
    * 页签区域的无障碍名称。
    * Accessible name of the tab region.
@@ -373,16 +322,6 @@ export interface AgentConnectDetailProps extends Omit<
    */
   activeTabKey?: string;
   /**
-   * 当前连接状态。
-   * Current connection status.
-   */
-  status?: AgentConnectStatus;
-  /**
-   * 状态旁展示的文本，例如已解析的接入地址。
-   * Shown next to the status, for example the resolved endpoint.
-   */
-  statusText?: string;
-  /**
    * 可替换文案，缺省为英文。
    * Replaceable copy; English by default.
    */
@@ -417,16 +356,6 @@ export interface AgentConnectDetailProps extends Omit<
    * Opens the host-provided external documentation.
    */
   onOpenDocs?: () => void;
-  /**
-   * 发起连接。
-   * Starts a connection.
-   */
-  onConnect?: () => void;
-  /**
-   * 断开连接。
-   * Ends the connection.
-   */
-  onDisconnect?: () => void;
 }
 
 /** 单组件形态：在列表与详情之间切换。Single-component form that switches between catalog and detail. */
@@ -460,16 +389,6 @@ export interface AgentConnectProps extends Omit<
    */
   loading?: boolean;
   /**
-   * 当前连接状态。
-   * Current connection status.
-   */
-  status?: AgentConnectStatus;
-  /**
-   * 状态旁展示的文本。
-   * Text shown next to the status.
-   */
-  statusText?: string;
-  /**
    * 可替换文案，缺省为英文。
    * Replaceable copy; English by default.
    */
@@ -499,14 +418,4 @@ export interface AgentConnectProps extends Omit<
    * Opens the host-provided external documentation.
    */
   onOpenDocs?: () => void;
-  /**
-   * 发起连接。
-   * Starts a connection.
-   */
-  onConnect?: () => void;
-  /**
-   * 断开连接。
-   * Ends the connection.
-   */
-  onDisconnect?: () => void;
 }

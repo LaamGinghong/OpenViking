@@ -193,6 +193,49 @@ export interface TuiSearchListContent {
   summary?: ReactNode;
 }
 
+/**
+ * 单个资源的预览结果，例如读取一个文件。
+ *
+ * A preview of one resource, for example reading a file.
+ */
+export interface TuiResourcePreviewContent {
+  /**
+   * 变体标记，固定为 `resource-preview`。
+   * Variant discriminator, always `resource-preview`.
+   */
+  variant: 'resource-preview';
+  /**
+   * 资源标题。
+   * Resource title.
+   */
+  title: string;
+  /**
+   * 正文，通常是文件内容。
+   * Body, usually the file content.
+   */
+  content: string;
+  /**
+   * 标题下方的元信息，例如类型与大小，按顺序以分隔符连接展示。
+   * Metadata under the title, for example type and size, joined in order.
+   */
+  meta?: readonly string[];
+  /**
+   * 没有 `meta` 时使用的单行说明。
+   * Single-line description used when `meta` is absent.
+   */
+  description?: string;
+  /**
+   * 资源自身的 URI，显示为可点击入口。
+   * The resource's own URI, rendered as an openable entry.
+   */
+  uri?: string;
+  /**
+   * 点击 URI 时跳转到的位置；省略时使用 `uri`。
+   * Where clicking the URI navigates to; `uri` is used when omitted.
+   */
+  navigationUri?: string;
+}
+
 /** 资源树结果。A resource tree result. */
 export interface TuiResourceTreeContent {
   /**
@@ -248,6 +291,62 @@ export interface TuiWriteResultContent {
    * Card title.
    */
   title?: string;
+}
+
+/**
+ * 命令帮助结果：按分组列出可用命令。
+ *
+ * A command-help result: available commands listed in groups.
+ */
+export interface TuiCommandHelpContent {
+  /**
+   * 变体标记，固定为 `command-help`。
+   * Variant discriminator, always `command-help`.
+   */
+  variant: 'command-help';
+  /**
+   * 命令分组。
+   * Command groups.
+   */
+  sections: readonly TuiCommandHelpSection[];
+}
+
+/** 命令帮助中的一组命令。One group of commands in the help result. */
+export interface TuiCommandHelpSection {
+  /**
+   * 分组唯一标识。
+   * Unique section key.
+   */
+  key: string;
+  /**
+   * 分组标题。
+   * Section title.
+   */
+  label: string;
+  /**
+   * 该组下的命令。
+   * Commands in this group.
+   */
+  items: readonly TuiCommandHelpItem[];
+}
+
+/** 命令帮助中的一条命令。One command in the help result. */
+export interface TuiCommandHelpItem {
+  /**
+   * 命令唯一标识。
+   * Unique command key.
+   */
+  key: string;
+  /**
+   * 命令名，包含开头的斜杠。
+   * Command name including the leading slash.
+   */
+  name: string;
+  /**
+   * 命令说明。
+   * Command description.
+   */
+  description?: string;
 }
 
 /** 执行失败。A failed execution. */
@@ -306,6 +405,16 @@ export type TuiRecordContent =
    */
   | TuiSearchListContent
   /**
+   * 单个资源的预览。
+   * A single resource preview.
+   */
+  | TuiResourcePreviewContent
+  /**
+   * 命令帮助。
+   * Command help.
+   */
+  | TuiCommandHelpContent
+  /**
    * 资源树。
    * Resource tree.
    */
@@ -354,6 +463,44 @@ export interface TuiRecord {
    */
   content?: TuiRecordContent;
   /**
+   * 执行中展示的骨架形态，省略时用通用骨架。
+   *
+   * 只在 `status` 为 `pending` 时有意义：不同命令的等待内容不一样，检索类要
+   * 列表骨架、写入类要结果骨架，组件据此选择对应的占位形态。
+   *
+   * Skeleton shape shown while running; a generic one is used when omitted.
+   *
+   * Only meaningful while `status` is `pending`: different commands wait for
+   * different things, a list skeleton for search versus a result skeleton for a
+   * write, and the component picks the matching placeholder from it.
+   */
+  loadingVariant?:
+    /**
+     * 检索结果骨架。
+     * Search result skeleton.
+     */
+    | 'search'
+    /**
+     * 资源读取骨架。
+     * Resource read skeleton.
+     */
+    | 'resource'
+    /**
+     * 写入结果骨架。
+     * Write result skeleton.
+     */
+    | 'write'
+    /**
+     * 状态卡片骨架。
+     * Status card skeleton.
+     */
+    | 'status'
+    /**
+     * 通用骨架。
+     * Generic skeleton.
+     */
+    | 'generic';
+  /**
    * 状态旁的短标签，例如耗时。
    * Short label next to the status, for example a duration.
    */
@@ -363,11 +510,6 @@ export interface TuiRecord {
    * Timestamp rendered in the record header.
    */
   createdAt?: string;
-  /**
-   * 是否可折叠；长输出默认 `true`。
-   * Whether the record can be collapsed; defaults to `true` for long output.
-   */
-  collapsible?: boolean;
 }
 
 /** 命令建议列表中的一项。One entry in the command suggestion list. */
@@ -527,16 +669,6 @@ export interface TuiLabels {
    * Message shown after a successful copy.
    */
   copied?: string;
-  /**
-   * 展开按钮文案。
-   * Expand button label.
-   */
-  expand?: string;
-  /**
-   * 折叠按钮文案。
-   * Collapse button label.
-   */
-  collapse?: string;
   /**
    * 无记录时的提示。
    * Message shown when there are no records.

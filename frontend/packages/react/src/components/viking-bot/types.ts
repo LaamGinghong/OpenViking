@@ -485,16 +485,6 @@ export interface VikingBotLabels {
    * New-session button label.
    */
   newSession?: string;
-  /**
-   * 重试按钮文案。
-   * Retry button label.
-   */
-  retry?: string;
-  /**
-   * 回到最新消息按钮文案。
-   * Scroll-to-latest button label.
-   */
-  scrollToLatest?: string;
 }
 
 /**
@@ -566,11 +556,6 @@ export interface VikingBotMessageListProps {
    * The host performs the copy; the list only reports the intent.
    */
   onCopy?: (text: string) => void;
-  /**
-   * 重试一条消息。
-   * Retries a message.
-   */
-  onRetry?: (messageId: string) => void;
   /**
    * 助手消息上的宿主自有动作，例如提交记忆。
    * Host-owned action on an assistant message, for example commit memory.
@@ -816,9 +801,4 @@ export interface VikingBotProps extends Omit<
    * The host performs the copy; the component only reports the intent.
    */
   onCopy?: (text: string) => void;
-  /**
-   * 重试一条消息。
-   * Retries a message.
-   */
-  onRetry?: (messageId: string) => void;
 }

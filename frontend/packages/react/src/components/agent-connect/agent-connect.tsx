@@ -8,7 +8,6 @@ export type {
   AgentConnectLabels,
   AgentConnectProps,
   AgentConnectSnippet,
-  AgentConnectStatus,
   AgentConnectStep,
   AgentConnectTab,
 } from './types.js';

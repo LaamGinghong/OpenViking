@@ -1,6 +1,9 @@
 import styles from './tui.module.css';
 
 export type {
+  TuiCommandHelpContent,
+  TuiCommandHelpItem,
+  TuiCommandHelpSection,
   TuiCommandSuggestion,
   TuiCustomContent,
   TuiErrorContent,
@@ -13,6 +16,7 @@ export type {
   TuiRecord,
   TuiRecordContent,
   TuiRecordStatus,
+  TuiResourcePreviewContent,
   TuiResourceTreeContent,
   TuiResourceTreeDetailRow,
   TuiResourceTreeItem,

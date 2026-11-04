@@ -6,6 +6,7 @@ export type {
   ResourceImportFilePickerProps,
   ResourceImportFormProps,
   ResourceImportLabels,
+  ResourceImportPickedFile,
   ResourceImportProps,
   ResourceImportSource,
   ResourceImportTask,

@@ -32,9 +32,39 @@ export interface ScopeOption {
    * Trailing tag, for example a role or plan.
    */
   badge?: ReactNode;
+  /**
+   * 该选项自己的动作，例如编辑或删除这一项。不传则行内不出现动作入口。
+   *
+   * 与 `ScopeSwitcherLevel.actions` 不同：那个作用于整个层级，这个只作用于
+   * 本行，通常渲染成悬停时出现的操作菜单。
+   *
+   * Actions of this option, for example editing or deleting this row. No action
+   * entry is rendered when omitted.
+   *
+   * Different from `ScopeSwitcherLevel.actions`, which acts on the whole level;
+   * this one acts on the row and is usually rendered as a hover action menu.
+   */
+  actions?: readonly ScopeLevelAction[];
+  /**
+   * 该选项当前是否处于进行中的变更，例如正在删除；为 `true` 时禁用并显示忙碌态。
+   * Whether a change to this option is in flight, for example a deletion; it is
+   * disabled and shown busy while true.
+   */
+  busy?: boolean;
 }
 
-/** 层级内的一个动作，例如新建或删除。One action inside a level, for example create or delete. */
+/**
+ * 层级内的一个动作，例如新建或编辑。
+ *
+ * 用于下拉底部的入口，作用于整个层级。针对单个选项的动作（例如某一项的编辑、
+ * 删除）挂在 `ScopeOption.actions` 上，见那里。
+ *
+ * One action inside a level, for example create or edit.
+ *
+ * Used for the entry at the bottom of the dropdown and acts on the whole level.
+ * Actions for one option, such as editing or deleting that row, hang off
+ * `ScopeOption.actions`; see there.
+ */
 export interface ScopeLevelAction {
   /**
    * 动作唯一标识。

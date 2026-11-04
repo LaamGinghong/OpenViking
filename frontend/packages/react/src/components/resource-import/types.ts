@@ -523,9 +523,9 @@ export interface ResourceImportFilePickerProps {
    */
   directoryPicker?: boolean;
   /**
-   * 上报用户选中的目录内容。每个条目带相对路径，组件按它还原目录结构。
-   * Reports the contents of a picked directory. Each entry carries its relative
-   * path, from which the component rebuilds the directory structure.
+   * 选择文件夹后触发，参数为文件列表，每个文件带相对于所选文件夹的路径。
+   * Called after a directory is picked, with its files and each file's path
+   * relative to the selected directory.
    */
   onDirectoryAdded?: (files: readonly ResourceImportPickedFile[]) => void;
   /**

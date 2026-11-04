@@ -197,8 +197,8 @@ export interface VikingBotImagePart {
    */
   alt?: string;
   /**
-   * 细节等级，沿用上游 `image_url.detail` 的语义。
-   * Detail level, following the upstream `image_url.detail` semantics.
+   * 图片细节等级，例如 `auto`、`low` 或 `high`。
+   * Image detail level, for example `auto`, `low` or `high`.
    */
   detail?: string;
 }
@@ -532,8 +532,9 @@ export interface VikingBotMessageListProps {
    */
   footer?: ReactNode;
   /**
-   * 身份作用域变化时强制重新挂载。
-   * Forces a remount when the identity scope changes.
+   * 当前身份作用域的标识；值变化时重置消息列表的展示状态。
+   * Identifies the current identity scope; changes reset the message list's
+   * display state.
    */
   listKey?: string;
   /**
@@ -747,8 +748,9 @@ export interface VikingBotProps extends Omit<
    */
   children?: ReactNode;
   /**
-   * 身份作用域变化时强制重新挂载消息列表。
-   * Forces a remount of the message list when the identity scope changes.
+   * 当前身份作用域的标识；值变化时重置消息列表的展示状态。
+   * Identifies the current identity scope; changes reset the message list's
+   * display state.
    */
   listKey?: string;
   /**

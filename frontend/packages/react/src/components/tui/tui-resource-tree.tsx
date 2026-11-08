@@ -31,7 +31,9 @@ export function TuiResourceTree({
   return (
     <div className="ov-tui__tree">
       {content.title ? (
-        <div className="ov-tui__card-title">{content.title}</div>
+        <div className="ov-tui__card-title">
+          <TuiUriText text={content.title} onOpenUri={onOpenUri} />
+        </div>
       ) : null}
       {!content.items.length ? <div className="ov-tui__muted">—</div> : null}
       {columns.length ? (
@@ -53,11 +55,7 @@ export function TuiResourceTree({
                         ?.value ?? '';
                     return (
                       <td key={column}>
-                        {value.startsWith('viking://') ? (
-                          <TuiUriText text={value} onOpenUri={onOpenUri} />
-                        ) : (
-                          value
-                        )}
+                        <TuiUriText text={value} onOpenUri={onOpenUri} />
                       </td>
                     );
                   })}
@@ -72,24 +70,27 @@ export function TuiResourceTree({
             const body = (
               <>
                 <span className="ov-tui__tree-title">
-                  <TuiUriText text={item.title} onOpenUri={onOpenUri} />
+                  {item.uri && onOpenUri ? (
+                    <button
+                      type="button"
+                      className="ov-tui__link"
+                      onClick={() => onOpenUri(item.uri ?? '')}
+                    >
+                      {item.title}
+                    </button>
+                  ) : (
+                    <TuiUriText text={item.title} onOpenUri={onOpenUri} />
+                  )}
                 </span>
                 {item.metaLabel ? (
-                  <span className="ov-tui__tree-meta">{item.metaLabel}</span>
+                  <span className="ov-tui__tree-meta">
+                    <TuiUriText text={item.metaLabel} onOpenUri={onOpenUri} />
+                  </span>
                 ) : null}
               </>
             );
 
-            return item.uri && onOpenUri ? (
-              <button
-                key={item.id}
-                type="button"
-                className="ov-tui__tree-item ov-tui__tree-item--action"
-                onClick={() => onOpenUri(item.uri ?? '')}
-              >
-                {body}
-              </button>
-            ) : (
+            return (
               <div key={item.id} className="ov-tui__tree-item">
                 {body}
               </div>

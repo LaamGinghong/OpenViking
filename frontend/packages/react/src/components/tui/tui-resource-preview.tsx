@@ -19,9 +19,13 @@ export function TuiResourcePreview({
     <div className="ov-tui__preview">
       {content.title ? (
         <div className="ov-tui__preview-head">
-          <span className="ov-tui__card-title">{content.title}</span>
+          <span className="ov-tui__card-title">
+            <TuiUriText text={content.title} onOpenUri={onOpenUri} />
+          </span>
           {metaLabel ? (
-            <span className="ov-tui__muted">{metaLabel}</span>
+            <span className="ov-tui__muted">
+              <TuiUriText text={metaLabel} onOpenUri={onOpenUri} />
+            </span>
           ) : null}
         </div>
       ) : null}

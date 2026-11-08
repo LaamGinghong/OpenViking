@@ -62,7 +62,7 @@ The table describes the implemented behaviour.
 | labels        | TuiLabels                       | —            | Interface copy and guidance.                                                                                                                        |
 | onValueChange | (value: string) => void         | —            | Reports input changes, including accepted commands and examples; inline hints never change the value or submit. Omission makes the input read-only. |
 | onSubmit      | (command: string) => void       | —            | Reports explicit submission intent. The host executes it; omission disables submission.                                                             |
-| onOpenUri     | (uri: string) => void           | —            | Called after a resource opens successfully, with its URI; not called on failure.                                                                    |
+| onOpenUri     | (uri: string) => void           | —            | Receives the URI on link activation; the host opens the resource.                                                                                   |
 | onCopy        | (text: string) => void          | —            | Called after copying succeeds, with the copied text; not called on failure. Omission does not affect copying.                                       |
 
 `onSubmit` reports the submitted text and does not await a result. The host owns sending, permissions and execution, and updates pending, successful or failed records. A pending record does not block later submissions.
@@ -91,7 +91,7 @@ Omitting `commands` leaves text input and submission available, without command 
 
 For `text`, `format` accepts `plain` or `markdown` and defaults to `plain`. Format JSON as a string and display it through `text`. Failures use `TuiRecord.status: 'error'`, with the error body in a text result; there is no separate error content variant.
 
-Each variant has a dedicated view: plain or Markdown text (JSON is pretty-printed), search rows with optional score details, resource preview, an aligned resource table with paging, status rows, write lines and grouped command help. URIs in text results are openable. Converting CLI output into these variants stays with the host.
+Each variant has a dedicated view: plain or Markdown text (JSON is pretty-printed), search rows with optional score details, resource preview, an aligned resource table with paging, status rows, write lines and grouped command help. Resource URI links in the input, command bubbles, Markdown and structured result strings share `onOpenUri`. Custom React nodes own their internal links. Clicking an input URI does not change or submit the command; Shift+Tab can focus links for Enter activation. Converting CLI output into these variants stays with the host.
 
 ### Copy and guidance
 

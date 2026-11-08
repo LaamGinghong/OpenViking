@@ -521,8 +521,9 @@ export interface TuiProps extends Omit<
    */
   onSubmit?: (command: string) => void;
   /**
-   * 资源成功打开后触发，参数为已打开的资源 URI；失败时不触发。
-   * Called after a resource opens successfully, with its URI; not called on failure.
+   * 点击资源 URI 时触发，由宿主接管打开；覆盖输入区、命令记录和结果中的链接。
+   * Called when a resource URI is activated in the input, command echo or results;
+   * the host owns navigation. Without a handler, text links use their native href.
    */
   onOpenUri?: (uri: string) => void;
   /**

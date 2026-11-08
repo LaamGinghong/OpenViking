@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import type { TuiSearchListContent, TuiSearchResultItem } from './types.js';
+import { TuiUriText } from './tui-uri-text.js';
 
 export interface TuiSearchListProps {
   content: TuiSearchListContent;
@@ -71,7 +72,7 @@ function SearchRow({
                 {item.title}
               </button>
             ) : (
-              item.title
+              <TuiUriText text={item.title} onOpenUri={onOpenUri} />
             )}
           </span>
           {item.levelLabel ? (
@@ -79,10 +80,14 @@ function SearchRow({
           ) : null}
         </span>
         {item.preview ? (
-          <span className="ov-tui__search-preview">{item.preview}</span>
+          <span className="ov-tui__search-preview">
+            <TuiUriText text={item.preview} onOpenUri={onOpenUri} />
+          </span>
         ) : null}
         {item.metaLabel ? (
-          <span className="ov-tui__search-meta">{item.metaLabel}</span>
+          <span className="ov-tui__search-meta">
+            <TuiUriText text={item.metaLabel} onOpenUri={onOpenUri} />
+          </span>
         ) : null}
       </span>
     </>
@@ -94,7 +99,13 @@ export function TuiSearchList({ content, onOpenUri }: TuiSearchListProps) {
   return (
     <div className="ov-tui__search">
       {content.summary ? (
-        <div className="ov-tui__search-summary">{content.summary}</div>
+        <div className="ov-tui__search-summary">
+          {typeof content.summary === 'string' ? (
+            <TuiUriText text={content.summary} onOpenUri={onOpenUri} />
+          ) : (
+            content.summary
+          )}
+        </div>
       ) : null}
       {content.items.length ? (
         <div className="ov-tui__search-items">

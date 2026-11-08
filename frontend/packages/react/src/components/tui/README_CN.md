@@ -19,7 +19,7 @@
 - 接受命令后，输入区使用宿主提供的 `inputText` 前缀（默认 `name`）并着色，后面直接显示位置参数提示；没有位置参数时显示必填选项。开始输入参数后占位收起，不写入受控值。完整详情仅在命令候选列表展开时展示。
 - `locale` 选择英文（`en`，默认）或中文（`zh`）界面文案，`labels` 可逐项覆盖；命令和结果文案由宿主本地化。示例跟随文档站语言。
 - `onSubmit` 上报显式提交意图。宿主负责请求、权限和执行，并通过 `records` 更新等待、成功或失败的记录；已有等待记录不阻止后续提交。
-- `onOpenUri` 在资源成功打开后通知已打开的 URI，失败时不触发；导航执行能力由接入层负责。
+- `onOpenUri` 在输入区、命令气泡或结果中的 URI 链接激活时收到原始地址，由宿主负责打开。未传回调时，纯文本链接使用原生 `href`。
 - 复制由组件完成，成功后通过 `onCopy` 通知宿主，参数为已复制的文本；失败时不触发该回调。省略回调不影响复制。
 - 命令筛选、高亮、键盘选择、填入和参数帮助由组件处理。宿主提供 `commands` 和可选 `commandGroups`，包含本地化的说明、参数、选项及示例。组件不取数，不读写本地存储。
 - `emptyState` 是完整空态的唯一配置入口，可组合标题、说明和快捷入口，相关交互由宿主在节点内处理。无记录时展示该节点；省略时使用 `labels.empty`，传 `null` 时隐藏空态内容。
@@ -27,7 +27,7 @@
 
 命令描述和分组由宿主提供，沿用现有描述和结果类型的新增命令无需发布组件。示例目录位于 `docs/docs/_demos/tui-commands/`，组件不再内置业务目录。省略 `commands` 时仍可输入和提交文本，但不展示候选或参数帮助。
 
-结果按七种 `TuiRecordContent` 变体分别渲染：`text`（纯文本或 Markdown，JSON 自动缩进）、`search-list`、`resource-preview`、`resource-tree`、`status`、`write-result` 与 `command-help`。文本结果中的 URI 会渲染为可打开入口；`resource-tree` 在有 `detailRows` 时按列对齐成表格，否则逐行展示并每 20 条分页。
+结果按七种 `TuiRecordContent` 变体分别渲染：`text`（纯文本或 Markdown，JSON 自动缩进）、`search-list`、`resource-preview`、`resource-tree`、`status`、`write-result` 与 `command-help`。输入区、命令气泡、Markdown 和结构化结果字符串中的资源 URI 链接共用 `onOpenUri`。自定义 ReactNode 内部的链接由宿主处理。点击输入区链接不会改变或提交命令；Shift+Tab 可聚焦链接，再按 Enter 激活。`resource-tree` 在有 `detailRows` 时按列对齐成表格，否则逐行展示并每 20 条分页。
 
 ## 结果内容
 

@@ -19,7 +19,7 @@ The view and interaction for command records, results and input. The record area
 - Accepted commands use the host-provided `inputText` prefix (default: `name`), colored in the editor. Positional parameter hints appear directly after it, or required flags when no positional parameters exist. Hints disappear while entering arguments and never enter the controlled value. Detailed help appears only while the command list is open.
 - `locale` selects built-in English (`en`, default) or Chinese (`zh`) interface copy. `labels` overrides individual strings; hosts localize command and result content. The docs demo follows the site language.
 - `onSubmit` reports explicit submission intent. The host owns requests, permissions and execution, and updates pending, successful or failed records through `records`. A pending record does not block later submissions.
-- `onOpenUri` reports the URI after a resource has been opened successfully, and does not fire on failure; the navigation capability belongs to the integration layer.
+- `onOpenUri` receives the raw URI when a link in the input, command bubble or results is activated. The host owns navigation; plain-text links use their native `href` when no handler is supplied.
 - Copying is performed by the component and reported through `onCopy` on success, with the copied text as the argument; the callback does not fire on failure. Omitting the callback does not affect copying.
 - Command matching, highlighting, keyboard selection, filling and parameter help stay in the component. Hosts supply `commands` and optional `commandGroups`, including localized descriptions, parameters, options and examples. The component does not fetch data or use local storage.
 - `emptyState` is the single configuration entry for the complete empty state and can combine a title, description and shortcut entries, with the related interaction handled by the host inside the node. It is shown when there are no records; when omitted, `labels.empty` is used, and passing `null` hides the empty-state content.
@@ -27,7 +27,7 @@ The view and interaction for command records, results and input. The record area
 
 Command descriptors and groups are host data. New commands using existing descriptor and result types require no component release. The demo catalogue lives in `docs/docs/_demos/tui-commands/`; there is no bundled business catalogue. Without `commands`, text input and submission remain available without suggestions or parameter help.
 
-Result rendering maps the seven `TuiRecordContent` variants onto dedicated views: `text` (plain or Markdown, JSON pretty-printed), `search-list`, `resource-preview`, `resource-tree`, `status`, `write-result` and `command-help`. URIs inside text results become openable entries. `resource-tree` renders a column-aligned table when items carry `detailRows` and pages at 20 rows otherwise.
+Result rendering maps the seven `TuiRecordContent` variants onto dedicated views: `text` (plain or Markdown, JSON pretty-printed), `search-list`, `resource-preview`, `resource-tree`, `status`, `write-result` and `command-help`. Resource URI links in the input, command bubbles, Markdown and structured result strings share `onOpenUri`. Custom React nodes own their internal links. Clicking an input URI does not change or submit the command; Shift+Tab can focus links for Enter activation. `resource-tree` renders a column-aligned table when items carry `detailRows` and pages at 20 rows otherwise.
 
 ## Result content
 

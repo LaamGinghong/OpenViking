@@ -62,7 +62,7 @@ import type {
 | labels        | TuiLabels                       | —            | 统一的界面文案与引导提示。                                                             |
 | onValueChange | (value: string) => void         | —            | 上报输入变化，包含接受的命令和示例；行内占位不改变输入值，也不提交。省略时输入框只读。 |
 | onSubmit      | (command: string) => void       | —            | 显式提交时上报意图，由宿主执行；省略时不能提交。                                       |
-| onOpenUri     | (uri: string) => void           | —            | 资源成功打开后触发，参数为已打开的 URI；失败时不触发。                                 |
+| onOpenUri     | (uri: string) => void           | —            | 链接激活时接收原始 URI，由宿主负责打开资源。                                           |
 | onCopy        | (text: string) => void          | —            | 复制成功后触发，参数为已复制的文本；失败时不触发。省略回调不影响复制。                 |
 
 `onSubmit` 上报提交的文本，不等待执行结果。宿主负责发送、权限和执行，并更新等待、成功或失败的记录；已有 `pending` 记录不阻止后续提交。
@@ -91,7 +91,7 @@ import type {
 
 `text.format` 支持 `plain` 和 `markdown`，缺省为 `plain`。JSON 格式化为字符串后通过 `text` 展示。失败通过 `TuiRecord.status: 'error'` 表达，错误正文使用文本结果，不单独定义错误内容变体。
 
-每种变体都有对应视图：纯文本或 Markdown（JSON 自动缩进）、带分数详情的检索行、资源预览、可按列对齐并分页的资源表、状态行、写入结果行与分组命令帮助。文本结果中的 URI 可打开。CLI 输出到这些变体的转换仍由宿主负责。
+每种变体都有对应视图：纯文本或 Markdown（JSON 自动缩进）、带分数详情的检索行、资源预览、可按列对齐并分页的资源表、状态行、写入结果行与分组命令帮助。输入区、命令气泡、Markdown 和结构化结果字符串中的资源 URI 链接共用 `onOpenUri`。自定义 ReactNode 内部的链接由宿主处理。点击输入区链接不会改变或提交命令；Shift+Tab 可聚焦链接，再按 Enter 激活。CLI 输出到这些变体的转换仍由宿主负责。
 
 ### 文案与引导提示
 

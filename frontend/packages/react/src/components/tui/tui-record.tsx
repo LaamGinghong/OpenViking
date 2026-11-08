@@ -59,9 +59,9 @@ function RecordBody({
         />
       );
     case 'status':
-      return <TuiStatusCard content={content} />;
+      return <TuiStatusCard content={content} onOpenUri={onOpenUri} />;
     case 'write-result':
-      return <TuiWriteResult content={content} />;
+      return <TuiWriteResult content={content} onOpenUri={onOpenUri} />;
     case 'command-help':
       return <TuiCommandHelp content={content} onPick={onPickCommand} />;
     default: {
@@ -102,7 +102,9 @@ export function TuiRecordItem(props: TuiRecordProps) {
   return (
     <div className="ov-tui__record" data-status={record.status}>
       <div className="ov-tui__bubble">
-        <code className="ov-tui__bubble-text">{record.command}</code>
+        <code className="ov-tui__bubble-text">
+          <TuiUriText text={record.command} onOpenUri={props.onOpenUri} />
+        </code>
         {record.createdAt ? (
           <span className="ov-tui__bubble-time">{record.createdAt}</span>
         ) : null}

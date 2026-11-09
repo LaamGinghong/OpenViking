@@ -199,6 +199,15 @@ html:root {
   margin-top: 20px;
 }
 
+/*
+ * 「连接真实服务」示例的表单与状态行。字段横排、窄屏折行；凭证输入用
+ * `type="password"`，只存在于页面内存。
+ *
+ * The form and status line of the "connect to a real service" demo. Fields sit in
+ * a row and wrap on narrow screens; the credential field is a password input that
+ * lives only in page memory.
+ */
+
 .ov-demo-controls button {
   padding: 6px 12px;
   border: 1px solid var(--rp-c-divider);

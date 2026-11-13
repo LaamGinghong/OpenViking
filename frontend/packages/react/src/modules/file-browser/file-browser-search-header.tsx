@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef, RefObject } from 'react';
 
-import FilterIcon from '../../../../icons/svg/dashboards/severity-filter.svg?react';
+import FilterIcon from '../../../../icons/svg/file-browser/search-filters.svg?react';
 import type { SearchMode } from './search-types.js';
 import type { ResolvedLabels } from './file-browser-labels.js';
 
@@ -72,7 +72,7 @@ export function FileBrowserSearchHeader({
         aria-expanded={advancedOpen}
         onClick={onToggleAdvanced}
       >
-        <FilterIcon width={16} height={16} aria-hidden="true" />
+        <FilterIcon aria-hidden="true" />
       </button>
     </div>
   );

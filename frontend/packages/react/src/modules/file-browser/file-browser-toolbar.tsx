@@ -1,5 +1,5 @@
 import SearchIcon from '../../../../icons/svg/scope-switcher/search.svg?react';
-import FilterIcon from '../../../../icons/svg/dashboards/severity-filter.svg?react';
+import FilterIcon from '../../../../icons/svg/file-browser/search-filters.svg?react';
 
 /**
  * 左栏的搜索行：一个搜索框形态的入口、内嵌的高级筛选按钮，以及独立的刷新。
@@ -66,7 +66,7 @@ export function FileBrowserToolbar({
           aria-expanded={advancedOpen}
           onClick={onAdvanced}
         >
-          <FilterIcon width={14} height={14} aria-hidden="true" />
+          <FilterIcon width={14} height={15} aria-hidden="true" />
         </button>
       </div>
       <button

@@ -43,10 +43,10 @@ export function FileBrowserSearchModeRow({
         <>
           <span>{text.searchResultCount?.(count)}</span>
           <span aria-hidden="true">・</span>
-          <span>{text.searchVia}</span>
         </>
       )}
       <span className="ov-file-browser-search__mode-chip">{mode}</span>
+      {count === null ? null : <span>{text.searchVia}</span>}
       <span className="ov-file-browser-search__switch-wrap">
         <button
           type="button"

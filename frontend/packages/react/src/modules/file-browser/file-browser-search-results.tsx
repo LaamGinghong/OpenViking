@@ -1,5 +1,5 @@
+import SearchEmptyArt from '../../../../icons/svg/file-browser/search-empty.svg?react';
 import { Button } from '../../shared/primitives/button/button.js';
-import type { ReactNode } from 'react';
 import { FileBrowserSearchRow } from './file-browser-search-row.js';
 import { FileBrowserSearchModeRow } from './file-browser-search-mode-row.js';
 import type { SearchHit, SearchMode } from './search-types.js';
@@ -22,7 +22,6 @@ export interface FileBrowserSearchResultsProps {
   listId: string;
   activeIndex: number;
   query: string;
-  preview?: ReactNode;
   onHighlight: (index: number) => void;
   onRetry: () => void;
   hits: SearchHit[];
@@ -46,7 +45,6 @@ export function FileBrowserSearchResults({
   listId,
   activeIndex,
   query,
-  preview,
   onHighlight,
   onRetry,
   hits,
@@ -123,12 +121,18 @@ export function FileBrowserSearchResults({
       <>
         {modeRow(null)}
         <div className="ov-file-browser-search__empty">
-          <p className="ov-file-browser-search__empty-title">
-            {text.searchEmptyTitle}
-          </p>
-          <p className="ov-file-browser-search__empty-hint">
-            {text.searchHint}
-          </p>
+          <SearchEmptyArt
+            className="ov-file-browser-search__empty-art"
+            aria-hidden="true"
+          />
+          <div className="ov-file-browser-search__empty-text">
+            <p className="ov-file-browser-search__empty-title">
+              {text.searchEmptyTitle}
+            </p>
+            <p className="ov-file-browser-search__empty-hint">
+              {text.searchHint}
+            </p>
+          </div>
         </div>
       </>
     );
@@ -148,27 +152,24 @@ export function FileBrowserSearchResults({
   return (
     <>
       {modeRow(hits.length)}
-      <div className="ov-file-browser-search__result-layout">
-        <ul
-          id={listId}
-          role="listbox"
-          aria-label={text.searchTitle}
-          className="ov-file-browser-search__list"
-        >
-          {hits.map((hit, index) => (
-            <FileBrowserSearchRow
-              key={`${hit.uri}#${hit.line ?? 0}-${index}`}
-              id={`${listId}-${index}`}
-              hit={hit}
-              query={query}
-              active={index === activeIndex}
-              onHighlight={() => onHighlight(index)}
-              onOpen={onOpen}
-            />
-          ))}
-        </ul>
-        {preview}
-      </div>
+      <ul
+        id={listId}
+        role="listbox"
+        aria-label={text.searchTitle}
+        className="ov-file-browser-search__list"
+      >
+        {hits.map((hit, index) => (
+          <FileBrowserSearchRow
+            key={`${hit.uri}#${hit.line ?? 0}-${index}`}
+            id={`${listId}-${index}`}
+            hit={hit}
+            query={query}
+            active={index === activeIndex}
+            onHighlight={() => onHighlight(index)}
+            onOpen={onOpen}
+          />
+        ))}
+      </ul>
     </>
   );
 }
